@@ -8,8 +8,8 @@
   ],
   "routes": [{"handle": "filesystem"},
     {
-      "src": "src/.*",
-      "dest": "src/index.js"
+      "src": "/.*",
+      "dest": "index.js"
     }
   ]
 }
