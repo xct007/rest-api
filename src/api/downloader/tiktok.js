@@ -103,10 +103,6 @@ function parse(aweme_id, share_id) {
 }
 async function urlParser(url) {
 	return new Promise(async (resolve, reject) => {
-		/**
-		 * It's works and I scared to recode it to better code :D
-		 *
-		 **/
 		let aweme_id,
 			cp,
 			result,
