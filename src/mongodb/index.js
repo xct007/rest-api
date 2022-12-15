@@ -125,7 +125,7 @@ const isValidKey = (key) =>
 		});
 	});
 const updateUser = async (name, limit, email, password, key) => {
-	const isValid = await getUserByName(name);
+	const isValid = await getUserByEmail(email);
 	if (!isValid) {
 		return false;
 	}

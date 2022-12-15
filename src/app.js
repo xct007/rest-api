@@ -112,7 +112,7 @@ app.use(
 		if (_key) {
 			const isValid = await isValidKey(_key);
 			if (isValid) {
-				await updateUser(isValid.name, isValid.limit - 1, false);
+				await updateUser(false, isValid.limit - 1, isValid.email, false, false);
 				if (isValid.limit == 0) {
 					return res.status(405).json({
 						status: false,
