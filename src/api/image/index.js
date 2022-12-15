@@ -5,26 +5,15 @@ const router = express.Router();
 
 const handler = require("../handler.js");
 
-// library
-const cecan = require("./db/cecan.json");
-
 // endpoint
-const images = [
-	{
-		name: "cecan",
-		url: random(cecan),
-	},
-];
+
 router.get("/:name", async (req, res) => {
 	const { name } = req.params;
-	const image = images.find((img) => img.name === name);
-	if (!image) {
-		return res.json(handler.error.notAllowed);
-	}
 	try {
+		const image = require(`./db/${name}.json`)
 		request(
 			{
-				url: image.url,
+				url: image[Math.floor(image.length * Math.random())],
 				encoding: null,
 			},
 			(error, response, buffer) => {
@@ -36,11 +25,36 @@ router.get("/:name", async (req, res) => {
 				}
 			}
 		);
-	} catch (e) {
+	} catch {
 		res.json(handler.error.internalError);
 	}
 });
-function random(_a) {
-	return _a[Math.floor(_a.length * Math.random())];
-}
+/* POST METHOD ?
+router.post("/:name", async (req, res) => {
+	const { name } = req.params;
+	try {
+		const image = require(`./db/${name}.json`)
+		request(
+			{
+				url: image[Math.floor(image.length * Math.random())],
+				encoding: null,
+			},
+			(error, response, buffer) => {
+				if (!error && response.statusCode === 200) {
+					res.set("Content-Type", "image/jpeg");
+					res.send(response.body);
+				} else {
+					res.json(handler.error.default);
+				}
+			}
+		);
+	} catch {
+		res.json(handler.error.internalError);
+	}
+});
+*/
 module.exports = router;
+
+function random(a){
+	return a[Math.floor(a.length * Math.random())];
+}
