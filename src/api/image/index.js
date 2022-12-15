@@ -10,7 +10,7 @@ const handler = require("../handler.js");
 router.get("/:name", async (req, res) => {
 	const { name } = req.params;
 	try {
-		const image = require(`./db/${name}.json`)
+		const image = require(`./db/${name}.json`);
 		request(
 			{
 				url: image[Math.floor(image.length * Math.random())],
@@ -55,6 +55,6 @@ router.post("/:name", async (req, res) => {
 */
 module.exports = router;
 
-function random(a){
+function random(a) {
 	return a[Math.floor(a.length * Math.random())];
 }

@@ -11,7 +11,7 @@ async function search(query) {
 	return new Promise(async (resolve, reject) => {
 		axios
 			.request({
-				url: "https://www.xnxx.com/search/" + query,
+				url: `https://www.xnxx.com/search/${query}`,
 				method: "GET",
 				headers: {
 					"user-agent":
@@ -20,29 +20,29 @@ async function search(query) {
 			})
 			.then(({ data }) => {
 				const $ = cheerio.load(data);
-				let __result = [];
+				const __result = [];
 				$(".mozaique")
 					.find("div.thumb-block")
 					.each((i, e) => {
-						let __html = $(e).html();
-						let __url = "https://www.xnxx.com" + $(e).find("a").attr("href");
-						let __thumb = $(e).find("div.thumb > a > img").attr("data-src");
-						let __title = $(e).find("p > a").text();
-						let __views = $(e)
+						const __html = $(e).html();
+						const __url = `https://www.xnxx.com${$(e).find("a").attr("href")}`;
+						const __thumb = $(e).find("div.thumb > a > img").attr("data-src");
+						const __title = $(e).find("p > a").text();
+						const __views = $(e)
 							.find("p.metadata > span.right")
 							.text()
 							.replace(/\n/g, "");
-						let __quality = $(e)
+						const __quality = $(e)
 							.find("p.metadata > span.video-hd")
 							.text()
-							.replace(/ -  /g, "");
-						let __duration = $(e)
+							.replace(/ - {2}/g, "");
+						const __duration = $(e)
 							.find("div.thumb-under > p.metadata")
 							.text()
 							.replace(__views, "")
 							.replace(__quality, "")
 							.replace(/\n\n/g, "")
-							.replace(/\n -  /g, "");
+							.replace(/\n - {2}/g, "");
 						__result.push({
 							title: __title,
 							thumb: __thumb,
@@ -61,7 +61,7 @@ async function dl(url) {
 	return new Promise(async (resolve, reject) => {
 		axios
 			.request({
-				url: url,
+				url,
 				method: "GET",
 				headers: {
 					"user-agent":
@@ -72,21 +72,21 @@ async function dl(url) {
 			})
 			.then(({ data }) => {
 				const $ = cheerio.load(data);
-				let __dl = $("#video-player-bg > script:nth-child(6)").get()[0]
+				const __dl = $("#video-player-bg > script:nth-child(6)").get()[0]
 					.children[0].data;
-				let __url = __dl.match(/(((https?:\/\/)|(www\.))[^\s]+)/g);
-				let __sd = __url[0].replace("');", "");
-				let __hd = __url[1].replace("');", "");
-				let __hls = __url[2].replace("');", "");
-				let __title = $(".clear-infobar > strong:nth-child(1)").text();
-				let __info = $("span.metadata")
+				const __url = __dl.match(/(((https?:\/\/)|(www\.))[^\s]+)/g);
+				const __sd = __url[0].replace("');", "");
+				const __hd = __url[1].replace("');", "");
+				const __hls = __url[2].replace("');", "");
+				const __title = $(".clear-infobar > strong:nth-child(1)").text();
+				const __info = $("span.metadata")
 					.text()
 					.replace("\t\t\t\t\t", " ")
 					.replace(" \t\t\t\t", "")
 					.replace(/\n/, "")
 					.replace(/\n/, " ")
 					.replace("\t\t\t\t\t", "");
-				let __description = $("p.metadata-row").text().replace(/\n/g, "");
+				const __description = $("p.metadata-row").text().replace(/\n/g, "");
 				resolve({
 					title: __title,
 					info: __info,

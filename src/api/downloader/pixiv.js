@@ -11,14 +11,14 @@ function search(query, random, r18) {
 		axios
 			.get(
 				`https://api.lolicon.app/setu/v2?size=regular&r18=${
-					r18 ? r18 : 0
+					r18 || 0
 				}&num=20&keyword=${query}`
 			)
 			.then(({ data }) => {
-				let Data = data.data,
-					result = [];
+				const Data = data.data;
+				const result = [];
 				if (Data.length == 0) rej(false);
-				for (let i of Data) {
+				for (const i of Data) {
 					result.push({
 						title: i.title,
 						author: i.author,
@@ -40,9 +40,9 @@ function search(query, random, r18) {
 function pixiv(idOrQuery) {
 	return new Promise((res, rej) => {
 		axios
-			.get("https://api.lolicon.app/setu/v2?pid=" + idOrQuery)
+			.get(`https://api.lolicon.app/setu/v2?pid=${idOrQuery}`)
 			.then(({ data }) => {
-				let Data = data.data;
+				const Data = data.data;
 				Data.length == 0
 					? rej(false)
 					: res({
@@ -52,10 +52,10 @@ function pixiv(idOrQuery) {
 	});
 }
 router.get("/", (req, res) => {
-	const mode = req.query.mode;
-	const query = req.query.query;
-	const random = req.query.random;
-	const r18 = req.query.r18;
+	const { mode } = req.query;
+	const { query } = req.query;
+	const { random } = req.query;
+	const { r18 } = req.query;
 	if (mode == "search") {
 		search(query, random, r18)
 			.then((data) => {
@@ -89,10 +89,10 @@ router.get("/", (req, res) => {
 	}
 });
 router.post("/", (req, res) => {
-	const mode = req.body.mode;
-	const query = req.body.query;
-	const random = req.body.random;
-	const r18 = req.body.r18;
+	const { mode } = req.body;
+	const { query } = req.body;
+	const { random } = req.body;
+	const { r18 } = req.body;
 	if (mode == "search") {
 		search(query, random, r18)
 			.then((data) => {
